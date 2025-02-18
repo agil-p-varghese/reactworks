@@ -1,10 +1,14 @@
+import { Routes, Route } from "react-router-dom";
 import HomePage from "./HomePage";
-import Home from "./Home";
-export default function App() {
-  return (
-  <div>
-    <HomePage />
+import ChatScreen from "./ChatScreen";
 
-  </div>
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/chat" element={<ChatScreen />} />
+    </Routes>
   );
 }
+
+export default App;
