@@ -4,7 +4,7 @@ const API_URL = "https://api.openai.com/v1/chat/completions";
 const API_KEY = import.meta.env.VITE_OPENAI_API_KEY; 
 
 export const sendMessageToChatGPT = async (message) => {
-  let retries = 2;
+  let retries = 1;
   
   while (retries > 0) {
     try {
