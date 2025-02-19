@@ -7,14 +7,16 @@ const ChatScreen = () => {
 
   const handleSendMessage = async () => {
     if (!input.trim()) return;
-    
+
     const userMessage = { role: "user", content: input };
-    setMessages([...messages, userMessage]);
+    setMessages((prevMessages) => [...prevMessages, userMessage]);
+
+    setInput(""); // Clear input immediately for better UX
 
     const botReply = await sendMessageToChatGPT(input);
-    setMessages([...messages, userMessage, { role: "assistant", content: botReply }]);
+    const botMessage = { role: "assistant", content: botReply };
 
-    setInput("");
+    setMessages((prevMessages) => [...prevMessages, botMessage]);
   };
 
   return (
@@ -25,7 +27,11 @@ const ChatScreen = () => {
           <p key={index} className={msg.role === "user" ? "user-msg" : "bot-msg"}>{msg.content}</p>
         ))}
       </div>
-      <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Start chatting..." />
+      <input
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        placeholder="Start chatting..."
+      />
       <button onClick={handleSendMessage}>Send</button>
     </div>
   );
