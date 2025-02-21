@@ -3,7 +3,7 @@ import { FiPaperclip } from "react-icons/fi"; // For attachment icon
 import { IoSend } from "react-icons/io5"; // For send icon
 import { AiOutlineHome, AiOutlineMessage, AiOutlineFileText } from "react-icons/ai"; // Bottom icons
 
-const API_KEY = import.meta.env.VITE_GEMINI_API_KEY; // Load from .env
+{/*const API_KEY = import.meta.env.GEMINI_API_KEY; */}// Load from .env
 import {useNavigate} from "react-router-dom";
 
 const Gemini = () => {
@@ -13,19 +13,16 @@ const Gemini = () => {
 
   const sendMessageToGemini = async (message) => {
     try {
-      const response = await fetch(
-        "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + API_KEY,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ contents: [{ parts: [{ text: message }] }] }),
-        }
-      );
-
+      const response = await fetch("http://localhost:5000/api/chatbot", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message }),
+      });
+  
       const data = await response.json();
-      return data?.candidates?.[0]?.content?.parts?.[0]?.text || "No response from Gemini.";
+      return data.reply;
     } catch (error) {
-      console.error("Error calling Gemini API:", error);
+      console.error("Error calling chatbot API:", error);
       return "Error fetching response.";
     }
   };
@@ -90,7 +87,7 @@ const Gemini = () => {
       {/* Bottom Navigation Bar */}
       <div className="fixed bottom-0 w-full bg-white shadow-lg flex justify-around py-3 rounded-t-3xl">
         <div className="flex flex-col items-center text-gray-500">
-          <button on onClick={()=>navigate("/")}>
+          <button onClick={()=>navigate("/")}>
           <AiOutlineHome size={24} />
           <span className="text-xs">Home</span></button>
         </div>
